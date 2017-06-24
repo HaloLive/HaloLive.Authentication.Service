@@ -5,8 +5,23 @@ VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{95E9610B-261C-4CE0-891A-DF577F1E9B06}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HaloLive.Authentication.Application", "src\HaloLive.Authentication.Application\HaloLive.Authentication.Application.csproj", "{D2FC405B-7D72-4391-8640-BED159DEAE83}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D2FC405B-7D72-4391-8640-BED159DEAE83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2FC405B-7D72-4391-8640-BED159DEAE83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2FC405B-7D72-4391-8640-BED159DEAE83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2FC405B-7D72-4391-8640-BED159DEAE83}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D2FC405B-7D72-4391-8640-BED159DEAE83} = {95E9610B-261C-4CE0-891A-DF577F1E9B06}
 	EndGlobalSection
 EndGlobal
