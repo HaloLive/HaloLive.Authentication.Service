@@ -51,7 +51,11 @@ namespace HaloLive.Authentication.Application
 
 			//Below is the OpenIddict registration
 			//This is the recommended setup from the official Github: https://github.com/openiddict/openiddict-core
-			services.AddIdentity<HaloLiveApplicationUser, HaloLiveApplicationRole>()
+			services.AddIdentity<HaloLiveApplicationUser, HaloLiveApplicationRole>(options =>
+				{
+					//These disable the ridiculous requirements that the defauly password scheme has
+					options.Password.RequireNonAlphanumeric = false;
+				})
 				.AddEntityFrameworkStores<HaloLiveAuthenticationDbContext, int>()
 				.AddDefaultTokenProviders();
 

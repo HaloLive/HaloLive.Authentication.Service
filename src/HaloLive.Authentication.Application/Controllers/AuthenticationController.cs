@@ -24,7 +24,9 @@ namespace HaloLive.Authentication
 	public class AuthenticationController : Controller
 	{
 		private IOptions<IdentityOptions> IdentityOptions { get; }
+
 		private SignInManager<HaloLiveApplicationUser> SignInManager { get; }
+
 		private UserManager<HaloLiveApplicationUser> UserManager { get; }
 
 		public AuthenticationController(
