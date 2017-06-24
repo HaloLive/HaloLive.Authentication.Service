@@ -14,8 +14,8 @@ namespace HaloLive.Authentication.Application
 		public static void Main(string[] args)
 		{
 			var host = new WebHostBuilder()
-				.UseContentRoot(Directory.GetCurrentDirectory())
 				.ConfigureKestrelHostWithCommandlinArgs(args) //setups HaloLive specific hosting
+				.UseContentRoot(Directory.GetCurrentDirectory())
 				.UseStartup<Startup>()
 				.UseApplicationInsights()
 				.Build();

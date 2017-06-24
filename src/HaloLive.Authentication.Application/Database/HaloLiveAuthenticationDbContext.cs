@@ -12,9 +12,9 @@ namespace HaloLive.Authentication
 	/// <see cref="DbContext"/> for the <see cref="HaloLiveApplicationUser"/>s for <see cref="OpenIddict"/>.
 	/// See Documentation for details: https://github.com/openiddict/openiddict-core
 	/// </summary>
-	public class HaloLiveAuthenticationDatabase : IdentityDbContext<HaloLiveApplicationUser, HaloLiveApplicationRole, int>
+	public class HaloLiveAuthenticationDbContext : IdentityDbContext<HaloLiveApplicationUser, HaloLiveApplicationRole, int>
 	{
-		public HaloLiveAuthenticationDatabase(DbContextOptions<HaloLiveAuthenticationDatabase> options)
+		public HaloLiveAuthenticationDbContext(DbContextOptions<HaloLiveAuthenticationDbContext> options)
 			: base(options)
 		{
 

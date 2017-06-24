@@ -20,6 +20,7 @@ namespace HaloLive.Authentication
 
 	//From an old OpenIddict OAuth sample and a slightly modified version that I personally use
 	//in https://github.com/GladLive/GladLive.Authentication/blob/master/src/GladLive.Authentication.OAuth/Controllers/AuthorizationController.cs
+	[Route("api/auth")]
 	public class AuthenticationController : Controller
 	{
 		private IOptions<IdentityOptions> IdentityOptions { get; }
@@ -36,7 +37,8 @@ namespace HaloLive.Authentication
 			UserManager = userManager;
 		}
 
-		[HttpPost("api/AuthenticationRequest"), Produces("application/json")]
+		[HttpPost]
+		[Produces("application/json")]
 		public async Task<IActionResult> Exchange(OpenIdConnectRequest request)
 		{
 			Debug.Assert(request.IsTokenRequest(),
@@ -138,7 +140,7 @@ namespace HaloLive.Authentication
 				OpenIddictConstants.Scopes.Roles
 			}.Intersect(request.GetScopes()));
 
-			ticket.SetResources("resource-server");
+			ticket.SetResources("auth-server");
 
 			// Note: by default, claims are NOT automatically included in the access and identity tokens.
 			// To allow OpenIddict to serialize them, you must attach them a destination, that specifies
