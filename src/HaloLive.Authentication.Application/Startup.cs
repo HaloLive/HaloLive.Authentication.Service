@@ -58,7 +58,7 @@ namespace HaloLive.Authentication.Application
 			services.AddDbContext<HaloLiveAuthenticationDbContext>(options =>
 			{
 				//TODO: Setup db options
-				options.UseInMemoryDatabase();
+				options.UseMySql(authOptions.Value.AuthenticationDatabaseString);
 				options.UseOpenIddict<int>();
 			});
 
