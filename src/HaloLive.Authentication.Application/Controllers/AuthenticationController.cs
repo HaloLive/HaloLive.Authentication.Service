@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Extensions;
 using AspNet.Security.OpenIdConnect.Primitives;
@@ -137,7 +138,6 @@ namespace HaloLive.Authentication
 			ticket.SetScopes(new[]
 			{
 				OpenIdConnectConstants.Scopes.OpenId,
-				OpenIdConnectConstants.Scopes.Email,
 				OpenIdConnectConstants.Scopes.Profile,
 				OpenIddictConstants.Scopes.Roles
 			}.Intersect(request.GetScopes()));
@@ -163,9 +163,8 @@ namespace HaloLive.Authentication
 
 				// Only add the iterated claim to the id_token if the corresponding scope was granted to the client application.
 				// The other claims will only be added to the access_token, which is encrypted when using the default format.
-				if ((claim.Type == OpenIdConnectConstants.Claims.Name && ticket.HasScope(OpenIdConnectConstants.Scopes.Profile)) ||
-					(claim.Type == OpenIdConnectConstants.Claims.Email && ticket.HasScope(OpenIdConnectConstants.Scopes.Email)) ||
-					(claim.Type == OpenIdConnectConstants.Claims.Role && ticket.HasScope(OpenIddictConstants.Claims.Roles)))
+				// We should also add the "sub" claim too for identity sake
+				if ((claim.Type == OpenIdConnectConstants.Claims.Name || claim.Type == OpenIdConnectConstants.Claims.Subject) && ticket.HasScope(OpenIdConnectConstants.Scopes.Profile))
 				{
 					destinations.Add(OpenIdConnectConstants.Destinations.IdentityToken);
 				}

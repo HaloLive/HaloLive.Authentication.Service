@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
+using System.Security.Claims;
 using AspNet.Security.OpenIdConnect.Primitives;
 using HaloLive.Hosting;
 using HaloLive.Models.Authentication;
@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace HaloLive.Authentication.Application
 {
@@ -55,6 +56,12 @@ namespace HaloLive.Authentication.Application
 				{
 					//These disable the ridiculous requirements that the defauly password scheme has
 					options.Password.RequireNonAlphanumeric = false;
+
+					//For some reason I can't figure out how to get the JWT middleware to spit out sub claims
+					//so we need to map the Identity to expect nameidentifier
+					options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
+					options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
+					options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
 				})
 				.AddEntityFrameworkStores<HaloLiveAuthenticationDbContext, int>()
 				.AddDefaultTokenProviders();
@@ -71,6 +78,10 @@ namespace HaloLive.Authentication.Application
 				// Register the Entity Framework stores.
 				options.AddEntityFrameworkCoreStores<HaloLiveAuthenticationDbContext>();
 
+				//This will disable the https requirement if we're debugging or not in production/debug mode.
+#if DEBUG || DEBUGBUILD
+				options.DisableHttpsRequirement();
+#endif
 				// Register the ASP.NET Core MVC binder used by OpenIddict.
 				// Note: if you don't call this method, you won't be able to
 				// bind OpenIdConnectRequest or OpenIdConnectResponse parameters.
@@ -83,16 +94,6 @@ namespace HaloLive.Authentication.Application
 				options.UseJsonWebTokens();
 				//Loads the cert from the specified path
 				options.AddSigningCertificate(X509Certificate2Loader.Create(authOptions.Value.JwtSigningX509Certificate2Path).Load());
-			});
-
-			// Configure Identity to use the same JWT claims as OpenIddict instead
-			// of the legacy WS-Federation claims it uses by default (ClaimTypes),
-			// which saves you from doing the mapping in your authorization controller.
-			services.Configure<IdentityOptions>(options =>
-			{
-				options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
-				options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
-				options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
 			});
 		}
 
